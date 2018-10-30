@@ -6,7 +6,7 @@ My idae
 *2 Find how many road points intersect with the Buffer and calculate the distances, assign the closest one
 *3 Return a data with hholdID, RoadID, Long, Lat
 
-##Package Usage
+## Package Usage
 ```
 import geopandas as gpd
 import pandas as pd
@@ -14,11 +14,11 @@ import numpy as np
 import timeit
 ```
 
-##Data
+## Data
 RaodID: point data extract from each road segment (.shp)
 Householde, School, and Daycare: points data(.shp)
 
-##Main Function
+## Main Function
 ```
 def gen_road(home, road):
     h = []
