@@ -2,9 +2,9 @@
 Assign Road ID to each individual household, school, and daycare.
 How:
 My idae
-*1 Buffer each household's, schoo's , and daycare's geometry points
-*2 Find how many road points intersect with the Buffer and calculate the distances, assign the closest one
-*3 Return a data with hholdID, RoadID, Long, Lat
+* 1 Buffer each household's, schoo's , and daycare's geometry points
+* 2 Find how many road points intersect with the Buffer and calculate the distances, assign the closest one
+* 3 Return a data with hholdID, RoadID, Long, Lat
 
 ## Package Usage
 ```
