@@ -21,20 +21,36 @@ def gen_road(home, road):
     lat = []
     
     for i in hp.index:
-        buff = home.loc[i,'geometry'].buffer(0.01)
+        print('\n This is loop ', i)
+        #Buffer
+        buff = home.loc[i,'geometry'].buffer(0.001)
+        #Find Intersected points
         r_in = road[road.intersects(buff)]
-        h_dist = r_in.distance(home.loc[i,'geometry']).sort_values().reset_index()
+        print('first buffer', r_in.shape)
         
-        hid = home.loc[i,'hhold']
-        rid = h_dist.iloc[0,0]
-        lg = r_in.loc[rid, 'Long']
-        lt = r_in.loc[rid, 'Lat']
+        if r_in.empty:
+            buff = home.loc[i,'geometry'].buffer(0.02)
+            r_in = road[road.intersects(buff)]
+            print('2nd buffer', r_in.shape)
+            h_dist = r_in.distance(home.loc[i,'geometry']).sort_values().reset_index()
+            hid = home.loc[i,'hhold']
+            print('2nd hid', hid)
+            rid = h_dist.iloc[0,0]
+            lg = r_in.loc[rid, 'Long']
+            lt = r_in.loc[rid, 'Lat']
+        else:
+            h_dist = r_in.distance(home.loc[i,'geometry']).sort_values().reset_index()
+            hid = home.loc[i,'hhold']
+            print('first hid', hid)
+            rid = h_dist.iloc[0,0]
+            lg = r_in.loc[rid, 'Long'
+            lt = r_in.loc[rid, 'Lat']
         
         h.append(hid)
         r.append(rid)
         long.append(lg)
         lat.append(lt)
-    
+
     hrid = pd.DataFrame({'hhold': h, 'SrdID': r, 'Long': long, 'Lat': lat})
     return hrid
 
