@@ -16,8 +16,8 @@ import multi processing
 ```
 
 ## Data
-RaodID: point data extract from each road segment (.shp)
-Householde, School, and Daycare: points data(.shp)
+* RaodID: point data extract from each road segment (.shp)
+* Householde, School, Daycare and work places: points data(.shp)
 
 ## Main Function
 ```
