@@ -1,10 +1,10 @@
-# Assign_RoadID_Home_School_Daycare
-Assign Road ID to each individual household, school, and daycare.
+# Assign RoadID for Home,School,Daycare and workplaces
 How:
 My idae
 * 1 Buffer each household's, schoo's , and daycare's geometry points
 * 2 Find how many road points intersect with the Buffer and calculate the distances, assign the closest one
-* 3 Return a data with hholdID, RoadID, Long, Lat
+* 3 Create a new column in the dataset by returning the results of road ID
+* 4 Using multiprocessing to release the intensive calculation
 
 ## Package Usage
 ```
@@ -12,6 +12,7 @@ import geopandas as gpd
 import pandas as pd
 import numpy as np
 import timeit
+import multi processing
 ```
 
 ## Data
@@ -20,27 +21,25 @@ Householde, School, and Daycare: points data(.shp)
 
 ## Main Function
 ```
-def gen_road(home, road):
-    h = []
-    r = []
-    long = []
-    lat = []
+def assign_rid(data, road):
     
-    for i in hp.index:
-        buff = home.loc[i,'geometry'].buffer(0.01)
+    d_geometry = data.geometry  #location
+    #print(d_geometry)
+    #Create Buffer for each Home or Work Point
+    buff = data.geometry.buffer(0.001)
+    #Find Intersected points
+    r_in = road[road.intersects(buff)]
+    #print(len(r_in))
+
+    if r_in.empty:
+        buff = data.geometry.buffer(0.02)
         r_in = road[road.intersects(buff)]
-        h_dist = r_in.distance(home.loc[i,'geometry']).sort_values().reset_index()
+            
+        h_dist = r_in.distance(d_geometry).sort_values().reset_index()
         
-        hid = home.loc[i,'hhold']
-        rid = h_dist.iloc[0,0]
-        lg = r_in.loc[rid, 'Long']
-        lt = r_in.loc[rid, 'Lat']
-        
-        h.append(hid)
-        r.append(rid)
-        long.append(lg)
-        lat.append(lt)
+        return h_dist.iloc[0,0]
     
-    hrid = pd.DataFrame({'hhold': h, 'SrdID': r, 'Long': long, 'Lat': lat})
-    return hrid
+    else:
+        h_dist = r_in.distance(d_geometry).sort_values().reset_index()
+        return h_dist.iloc[0,0]
 ```
