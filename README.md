@@ -12,7 +12,8 @@ import geopandas as gpd
 import pandas as pd
 import numpy as np
 import timeit
-import multi processing
+import multiprocessing
+from math import sin, cos, sqrt, atan2, radians
 ```
 
 ## Data
@@ -20,26 +21,23 @@ import multi processing
 * Householde, School, Daycare and work places: points data(.shp)
 
 ## Main Function
+New Distance function
 ```
-def assign_rid(data, road):
+def new_distance(x1, y1, x2, y2):
+    # approximate radius of earth in km
+    R = 6373.0
     
-    d_geometry = data.geometry  #location
-    #print(d_geometry)
-    #Create Buffer for each Home or Work Point
-    buff = data.geometry.buffer(0.001)
-    #Find Intersected points
-    r_in = road[road.intersects(buff)]
-    #print(len(r_in))
+    lat1 = radians (x1)
+    long1 = radians (y1)
+    lat2 = radians(x2)
+    long2 = radians(y2)
+    
+    dlon = long2 - long1
+    dlat = lat2 - lat1
+    
+    a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
 
-    if r_in.empty:
-        buff = data.geometry.buffer(0.02)
-        r_in = road[road.intersects(buff)]
-            
-        h_dist = r_in.distance(d_geometry).sort_values().reset_index()
-        
-        return h_dist.iloc[0,0]
-    
-    else:
-        h_dist = r_in.distance(d_geometry).sort_values().reset_index()
-        return h_dist.iloc[0,0]
+    distance = R * c
+    return distance
 ```
