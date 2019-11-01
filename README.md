@@ -1,10 +1,14 @@
 # Assign RoadID for Home,School,Daycare and workplaces
 How:
-My idae
 * 1 Buffer each household's, schoo's , and daycare's geometry points
-* 2 Find how many road points intersect with the Buffer and calculate the distances, assign the closest one
-* 3 Create a new column in the dataset by returning the results of road ID
+* 2 Find road points intersecting the Buffer zone and calculate the distances, assign the closest road point ID
+* 3 Create a new column in the dataset by returning the results of road point ID
 * 4 Using multiprocessing to release the intensive calculation
+
+## Overall workflow
+* 1 Create the center point of each road segments by using the road point ID as the key
+* 2 Assign Road ID to School, Daycare, Workplaces, Home
+* 3 For the Home, extra efforts are needed, assgin the road point ID to each agent
 
 ## Package Usage
 ```
